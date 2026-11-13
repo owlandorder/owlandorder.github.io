@@ -1,0 +1,24 @@
+{
+  "version": "v1.0",
+  "brand": "Owl & Order",
+  "tagline": "See it clearly. Get it done.",
+  "intro": "Practical digital tools and templates, built from what buyers actually need.",
+  "description": "Owl & Order: practical digital tools and templates for Excel and Google Sheets. Links to the shop and free tools.",
+  "links": [
+    {
+      "label": "Small Business Tax Spreadsheet 2026",
+      "note": "Schedule C tracker for Excel and Google Sheets",
+      "url": "https://owlandorder.etsy.com/listing/4609182782",
+      "badge": "Featured"
+    },
+    {
+      "label": "Browse the shop on Etsy",
+      "note": "All Owl & Order tools in one place",
+      "url": "https://owlandorder.etsy.com"
+    }
+  ],
+  "footer": [
+    "Digital downloads. Nothing physical will be shipped.",
+    "Tax and finance tools are organizing tools, not tax, legal or financial advice."
+  ]
+}
