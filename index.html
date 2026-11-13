@@ -9,11 +9,19 @@
 <meta property="og:description" content="Owl &amp; Order: practical digital tools and templates for Excel and Google Sheets. Links to the shop and free tools.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://owlandorder.github.io/">
+<meta property="og:image" content="https://owlandorder.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Owl &amp; Order logo: an owl shaped like the letter O with a check mark for a beak">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F7F2E8">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="canonical" href="https://owlandorder.github.io/">
 <style>
 :root {
-  --bg: #EDEBE6; --ink: #1F2A44; --muted: #4B5563; --card: #FFFFFF;
-  --line: #D6D3CC; --accent: #0F766E; --gold: #B7791F;
+  --bg: #F7F2E8; --ink: #142D38; --gold: #D6A43A;
+  --muted: #4A5A62; --card: #FFFFFF; --line: #E3DCCD;
 }
 * { box-sizing: border-box; }
 body {
@@ -24,7 +32,8 @@ body {
 main { max-width: 34rem; margin: 0 auto; padding: 3.5rem 1.25rem 2.5rem; }
 header { text-align: center; margin-bottom: 2rem; }
 h1 { font-size: 1.9rem; letter-spacing: -0.02em; margin: 0 0 .35rem; }
-.tagline { font-weight: 600; color: var(--accent); margin: 0 0 .75rem; }
+.logo { width: 104px; height: 104px; border-radius: 50%; display: block; margin: 0 auto 1rem; }
+.tagline { font-weight: 600; margin: 0 0 .75rem; }
 .intro { color: var(--muted); margin: 0; }
 ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }
 .btn {
@@ -33,11 +42,11 @@ ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }
   transition: border-color .15s, transform .15s;
 }
 .btn:hover, .btn:focus-visible { border-color: var(--ink); transform: translateY(-1px); }
-.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 .label { display: flex; align-items: center; gap: .5rem; font-weight: 650; font-size: 1.05rem; }
 .badge {
   font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-  color: var(--gold); border: 1px solid currentColor; border-radius: 999px; padding: .05rem .5rem;
+  color: var(--ink); background: var(--gold); border-radius: 999px; padding: .1rem .55rem;
 }
 .note { display: block; color: var(--muted); font-size: .92rem; margin-top: .15rem; }
 footer { margin-top: 2.5rem; text-align: center; color: var(--muted); font-size: .8rem; }
@@ -48,6 +57,7 @@ footer p { margin: .25rem 0; }
 <body>
 <main>
 <header>
+<img class="logo" src="assets/logo-500.png" alt="Owl &amp; Order logo" width="104" height="104">
 <h1>Owl &amp; Order</h1>
 <p class="tagline">See it clearly. Get it done.</p>
 <p class="intro">Practical digital tools and templates, built from what buyers actually need.</p>

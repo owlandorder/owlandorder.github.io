@@ -1,6 +1,12 @@
 {
-  "version": "v1.0",
+  "version": "v1.1",
   "brand": "Owl & Order",
+  "logo": "assets/logo-500.png",
+  "colors": {
+    "cream": "#F7F2E8",
+    "navy": "#142D38",
+    "gold": "#D6A43A"
+  },
   "tagline": "See it clearly. Get it done.",
   "intro": "Practical digital tools and templates, built from what buyers actually need.",
   "description": "Owl & Order: practical digital tools and templates for Excel and Google Sheets. Links to the shop and free tools.",

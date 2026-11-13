@@ -2,7 +2,9 @@
 """Stránka odkazov Owl & Order: links.json -> index.html (statické HTML, bez JavaScriptu a sledovania).
 
 Použitie (z koreňa repozitára):  python3 build.py
-Mení sa len links.json; index.html sa vždy vyrobí znova týmto skriptom.
+Mení sa len links.json (texty, odkazy, farby, logo); index.html a odvodené obrázky
+(ikona záložky, ikona pre mobil, náhľad pri zdieľaní) sa vždy vyrobia znova týmto skriptom.
+Obrázky potrebujú Pillow a písmo Inter (cloudové prostredie Clauda).
 """
 import html
 import json
@@ -19,7 +21,7 @@ def esc(s):
 
 def check(d):
     errs = []
-    for k in ("brand", "tagline", "intro", "description", "links", "footer"):
+    for k in ("brand", "tagline", "intro", "description", "links", "footer", "logo", "colors"):
         if not d.get(k):
             errs.append(f"chýba pole {k}")
     for i, l in enumerate(d.get("links", []), 1):
@@ -32,8 +34,41 @@ def check(d):
     if errs:
         sys.exit("links.json:\n- " + "\n- ".join(errs))
 
+FONT_DIR = pathlib.Path("/usr/share/fonts/opentype/inter")
+
+
+def images(d):
+    """Ikona záložky, ikona pre mobil a náhľad pri zdieľaní (1200 × 630) z loga."""
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        print("Pillow chýba: obrázky sa nevyrobili, ostávajú staré")
+        return
+    logo = Image.open(ROOT / d["logo"]).convert("RGBA")
+    out = ROOT / "assets"
+    logo.resize((32, 32), Image.LANCZOS).save(out / "favicon-32.png")
+    logo.resize((180, 180), Image.LANCZOS).save(out / "apple-touch-icon.png")
+
+    c = d["colors"]
+    og = Image.new("RGB", (1200, 630), c["cream"])
+    og.paste(logo.resize((420, 420), Image.LANCZOS), (90, 105), logo.resize((420, 420), Image.LANCZOS))
+    draw = ImageDraw.Draw(og)
+    try:
+        f_title = ImageFont.truetype(str(FONT_DIR / "InterDisplay-Bold.otf"), 92)
+        f_tag = ImageFont.truetype(str(FONT_DIR / "Inter-SemiBold.otf"), 40)
+    except OSError:
+        print("Písmo Inter chýba: náhľad bez textu")
+        og.save(out / "og.png", optimize=True)
+        return
+    x = 560
+    draw.text((x, 220), d["brand"], font=f_title, fill=c["navy"])
+    draw.rectangle((x, 345, x + 96, 353), fill=c["gold"])
+    draw.text((x, 380), d["tagline"], font=f_tag, fill=c["navy"])
+    og.save(out / "og.png", optimize=True)
+
 
 def render(d):
+    c = d["colors"]
     items = []
     for l in d["links"]:
         badge = f'<span class="badge">{esc(l["badge"])}</span>' if l.get("badge") else ""
@@ -54,11 +89,19 @@ def render(d):
 <meta property="og:description" content="{esc(d["description"])}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://owlandorder.github.io/">
+<meta property="og:image" content="https://owlandorder.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{esc(d["brand"])} logo: an owl shaped like the letter O with a check mark for a beak">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="{esc(c["cream"])}">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="canonical" href="https://owlandorder.github.io/">
 <style>
 :root {{
-  --bg: #EDEBE6; --ink: #1F2A44; --muted: #4B5563; --card: #FFFFFF;
-  --line: #D6D3CC; --accent: #0F766E; --gold: #B7791F;
+  --bg: {esc(c["cream"])}; --ink: {esc(c["navy"])}; --gold: {esc(c["gold"])};
+  --muted: #4A5A62; --card: #FFFFFF; --line: #E3DCCD;
 }}
 * {{ box-sizing: border-box; }}
 body {{
@@ -69,7 +112,8 @@ body {{
 main {{ max-width: 34rem; margin: 0 auto; padding: 3.5rem 1.25rem 2.5rem; }}
 header {{ text-align: center; margin-bottom: 2rem; }}
 h1 {{ font-size: 1.9rem; letter-spacing: -0.02em; margin: 0 0 .35rem; }}
-.tagline {{ font-weight: 600; color: var(--accent); margin: 0 0 .75rem; }}
+.logo {{ width: 104px; height: 104px; border-radius: 50%; display: block; margin: 0 auto 1rem; }}
+.tagline {{ font-weight: 600; margin: 0 0 .75rem; }}
 .intro {{ color: var(--muted); margin: 0; }}
 ul {{ list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }}
 .btn {{
@@ -78,11 +122,11 @@ ul {{ list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }}
   transition: border-color .15s, transform .15s;
 }}
 .btn:hover, .btn:focus-visible {{ border-color: var(--ink); transform: translateY(-1px); }}
-.btn:focus-visible {{ outline: 3px solid var(--accent); outline-offset: 2px; }}
+.btn:focus-visible {{ outline: 3px solid var(--ink); outline-offset: 2px; }}
 .label {{ display: flex; align-items: center; gap: .5rem; font-weight: 650; font-size: 1.05rem; }}
 .badge {{
   font-size: .72rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-  color: var(--gold); border: 1px solid currentColor; border-radius: 999px; padding: .05rem .5rem;
+  color: var(--ink); background: var(--gold); border-radius: 999px; padding: .1rem .55rem;
 }}
 .note {{ display: block; color: var(--muted); font-size: .92rem; margin-top: .15rem; }}
 footer {{ margin-top: 2.5rem; text-align: center; color: var(--muted); font-size: .8rem; }}
@@ -93,6 +137,7 @@ footer p {{ margin: .25rem 0; }}
 <body>
 <main>
 <header>
+<img class="logo" src="{esc(d["logo"])}" alt="{esc(d["brand"])} logo" width="104" height="104">
 <h1>{esc(d["brand"])}</h1>
 <p class="tagline">{esc(d["tagline"])}</p>
 <p class="intro">{esc(d["intro"])}</p>
@@ -115,6 +160,7 @@ footer p {{ margin: .25rem 0; }}
 def main():
     d = json.loads((ROOT / "links.json").read_text(encoding="utf-8"))
     check(d)
+    images(d)
     (ROOT / "index.html").write_text(render(d), encoding="utf-8")
     print(f"index.html vyrobený ({d.get('version', '?')}, {len(d['links'])} odkazy)")
 
