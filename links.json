@@ -1,5 +1,5 @@
 {
-  "version": "v1.1",
+  "version": "v1.2",
   "brand": "Owl & Order",
   "logo": "assets/logo-500.png",
   "colors": {
@@ -26,5 +26,8 @@
   "footer": [
     "Digital downloads. Nothing physical will be shipped.",
     "Tax and finance tools are organizing tools, not tax, legal or financial advice."
-  ]
+  ],
+  "site_verification": {
+    "p:domain_verify": "4a94a5c4faffe413ba3c47fede854080"
+  }
 }

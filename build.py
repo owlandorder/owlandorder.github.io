@@ -78,6 +78,7 @@ def render(d):
             f'<span class="label">{esc(l["label"])}{badge}</span>{note}</a></li>'
         )
     footer = "".join(f"<p>{esc(p)}</p>" for p in d["footer"])
+    verify = "".join(f'<meta name="{esc(k)}" content="{esc(v)}">\n' for k, v in d.get("site_verification", {}).items())
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,7 +96,7 @@ def render(d):
 <meta property="og:image:alt" content="{esc(d["brand"])} logo: an owl shaped like the letter O with a check mark for a beak">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="{esc(c["cream"])}">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+{verify}<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="canonical" href="https://owlandorder.github.io/">
 <style>
